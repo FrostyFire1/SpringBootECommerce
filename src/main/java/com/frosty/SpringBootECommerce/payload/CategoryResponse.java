@@ -4,8 +4,6 @@ import com.frosty.SpringBootECommerce.model.Category;
 import lombok.*;
 
 import java.util.List;
-
-@AllArgsConstructor
 @Builder
 @Getter
 public class CategoryResponse {
