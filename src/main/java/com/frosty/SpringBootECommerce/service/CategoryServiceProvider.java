@@ -8,6 +8,9 @@ import com.frosty.SpringBootECommerce.payload.CategoryResponse;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,16 +25,25 @@ public class CategoryServiceProvider implements CategoryService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public CategoryResponse getAllCategories() {
-        List<CategoryDTO> categories = categoryRepository
-                .findAll()
+    public CategoryResponse getAllCategories(Integer page, Integer pageSize) {
+        Pageable pageDetails =  PageRequest.of(page, pageSize);
+        Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
+        List<CategoryDTO> categories = categoryPage
+                .getContent()
                 .stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
                 .collect(Collectors.toList());
         if(categories.isEmpty()){
             throw new APIException("No categories found");
         }
-        return new CategoryResponse(categories);
+        return CategoryResponse.builder()
+                .content(categories)
+                .page(page)
+                .pageSize(pageSize)
+                .totalElements(categoryPage.getTotalElements())
+                .totalPages(categoryPage.getTotalPages())
+                .lastPage(categoryPage.isLast())
+                .build();
     }
 
     @Override

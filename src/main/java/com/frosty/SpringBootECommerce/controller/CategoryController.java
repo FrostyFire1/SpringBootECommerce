@@ -25,13 +25,11 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/echo")
-    public ResponseEntity<String> echoMessage(@RequestParam(name = "message") String message) {
-        return ResponseEntity.ok(String.format("Echoing %s",message));
-    }
     @GetMapping("/public/categories")
-    public ResponseEntity<CategoryResponse> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
+    public ResponseEntity<CategoryResponse> getAllCategories(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        return ResponseEntity.ok(categoryService.getAllCategories(page, pageSize));
     }
 
     @PostMapping("/public/categories")

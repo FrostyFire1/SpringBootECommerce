@@ -5,7 +5,7 @@ import com.frosty.SpringBootECommerce.payload.CategoryResponse;
 
 
 public interface CategoryService {
-    CategoryResponse getAllCategories();
+    CategoryResponse getAllCategories(Integer page, Integer pageSize);
     CategoryDTO addCategory(CategoryDTO categoryDTO);
     CategoryDTO deleteCategory(Long categoryId);
     CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
