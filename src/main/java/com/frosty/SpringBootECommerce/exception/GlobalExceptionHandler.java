@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.exception;
 
+import com.frosty.SpringBootECommerce.payload.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -24,16 +25,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> resourceNotFoundHandler(ResourceNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<APIResponse> resourceNotFoundHandler(ResourceNotFoundException e) {
+        return new ResponseEntity<>(new APIResponse(e.getMessage(), false), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(APIException.class)
-    public ResponseEntity<String> APIHandler(APIException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity<APIResponse> APIHandler(APIException e) {
+        return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<String> missingServletRequestParameterHandler(MissingServletRequestParameterException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<APIResponse> missingServletRequestParameterHandler(MissingServletRequestParameterException e) {
+        return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
     }
 }
