@@ -1,10 +1,8 @@
 package com.frosty.SpringBootECommerce.payload;
 
 import com.frosty.SpringBootECommerce.model.Category;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +12,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductDTO {
     private Long id;
+    @NotBlank
+    private String name;
+    @NotBlank
     private String description;
-    private Double discount;
-    private String image;
-    private Double price;
-    private String productName;
+    @NotNull
     private Integer quantity;
+    @NotNull
+    private Double price;
+    private Double discount = 0.0;
     private Double specialPrice;
     private Long sellerId;
+    private String image;
     private Category category;
 }

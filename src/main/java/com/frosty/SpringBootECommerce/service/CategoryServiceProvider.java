@@ -26,23 +26,25 @@ public class CategoryServiceProvider implements CategoryService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public CategoryResponse getAllCategories(Integer page, Integer pageSize, String sortBy, String sortOrder) {
-        Sort sortDetails = sortBy.equalsIgnoreCase("asc")
+    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortDetails = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageDetails =  PageRequest.of(page, pageSize, sortDetails);
+        Pageable pageDetails =  PageRequest.of(pageNumber, pageSize, sortDetails);
         Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
         List<CategoryDTO> categories = categoryPage
                 .getContent()
                 .stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
-                .collect(Collectors.toList());
+                .toList();
+
         if(categories.isEmpty()){
             throw new APIException("No categories found");
         }
+
         return CategoryResponse.builder()
                 .content(categories)
-                .page(page)
+                .page(pageNumber)
                 .pageSize(pageSize)
                 .totalElements(categoryPage.getTotalElements())
                 .totalPages(categoryPage.getTotalPages())
@@ -69,10 +71,10 @@ public class CategoryServiceProvider implements CategoryService {
     }
 
     @Override
-    public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
-        categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category","categoryId", categoryId));
-        categoryDTO.setCategoryId(categoryId);
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long id) {
+        categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category","id", id));
+        categoryDTO.setId(id);
         Category category = modelMapper.map(categoryDTO,  Category.class);
         return modelMapper.map(categoryRepository.save(category), CategoryDTO.class);
     }

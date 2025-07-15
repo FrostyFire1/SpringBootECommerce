@@ -1,0 +1,16 @@
+package com.frosty.SpringBootECommerce.payload;
+
+import lombok.*;
+
+import java.util.List;
+
+@Builder
+@Getter
+public class ProductResponse {
+    private List<ProductDTO> content;
+    private Integer page;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private Boolean lastPage;
+}
