@@ -56,8 +56,7 @@ public class GlobalServiceHelper {
                                                     ModelMapper modelMapper,
                                                     String exceptionMessage,
                                                     Predicate<T> filter){
-        List<TDTO> list = page
-                .getContent()
+        List<TDTO> list = page.getContent()
                 .stream()
                 .filter(filter)
                 .map(product -> modelMapper.map(product, dtoClass))

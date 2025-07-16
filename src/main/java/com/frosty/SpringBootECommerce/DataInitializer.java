@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+
 @Configuration
 public class DataInitializer {
     @Autowired
@@ -18,7 +20,7 @@ public class DataInitializer {
     @Bean
     public CommandLineRunner initDatabase() {
         return args -> {
-            Category category = new Category(null, "Suits");
+            Category category = new Category(null, "Suits", new ArrayList<>());
             categoryRepository.save(category);
             productRepository.save(new Product(null,
                     "Blue Suit No Tie",

@@ -43,6 +43,12 @@ public class ProductServiceProvider implements ProductService {
     public ProductDTO addProduct(ProductDTO productDTO, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+        if(category.getProducts()
+                .stream()
+                .anyMatch(p -> p.getName().equals(productDTO.getName()))) {
+            throw new APIException("Product already exists");
+        }
+
         Product product = modelMapper.map(productDTO, Product.class);
         product.setCategory(category);
         product.setSpecialPrice(product.getPrice() * (1 -  (product.getDiscount()/100)));
