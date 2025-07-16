@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.service;
 
+import com.frosty.SpringBootECommerce.configuration.AppConstants;
 import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
 import com.frosty.SpringBootECommerce.model.Category;
@@ -14,8 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceProvider implements ProductService {
@@ -115,5 +122,31 @@ public class ProductServiceProvider implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
         productRepository.delete(product);
         return modelMapper.map(product, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
+        Product product = productRepository
+                .findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        String fileName = uploadImage(AppConstants.IMAGE_DIRECTORY, image);
+        product.setImage(fileName);
+        product = productRepository.save(product);
+        return modelMapper.map(product, ProductDTO.class);
+    }
+    private String uploadImage(String path, MultipartFile image) throws IOException {
+        String fileName = image.getOriginalFilename();
+        String randomId = UUID.randomUUID().toString();
+        String actualFileName = randomId.concat(fileName.substring(fileName.lastIndexOf('.')));
+
+        String filePath = path + File.separator + actualFileName;
+        File directory = new File(path);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+
+        Files.copy(image.getInputStream(), Path.of(filePath));
+        return actualFileName;
     }
 }
