@@ -6,4 +6,5 @@ import com.frosty.SpringBootECommerce.payload.ProductResponse;
 public interface ProductService {
     ProductDTO addProduct(ProductDTO productDTO, Long categoryId);
     ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    ProductResponse getProductsInCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 }

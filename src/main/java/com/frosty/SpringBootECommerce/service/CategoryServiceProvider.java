@@ -5,17 +5,15 @@ import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
 import com.frosty.SpringBootECommerce.model.Category;
 import com.frosty.SpringBootECommerce.payload.CategoryDTO;
 import com.frosty.SpringBootECommerce.payload.CategoryResponse;
+import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceProvider implements CategoryService {
@@ -27,21 +25,8 @@ public class CategoryServiceProvider implements CategoryService {
     private ModelMapper modelMapper;
     @Override
     public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Sort sortDetails = sortOrder.equalsIgnoreCase("asc")
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-        Pageable pageDetails =  PageRequest.of(pageNumber, pageSize, sortDetails);
-        Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
-        List<CategoryDTO> categories = categoryPage
-                .getContent()
-                .stream()
-                .map(category -> modelMapper.map(category, CategoryDTO.class))
-                .toList();
-
-        if(categories.isEmpty()){
-            throw new APIException("No categories found");
-        }
-
+        Page<Category> categoryPage =  GlobalServiceHelper.getAllItems(pageNumber, pageSize, sortBy, sortOrder, categoryRepository);
+        List<CategoryDTO> categories = GlobalServiceHelper.getDTOContent(categoryPage, CategoryDTO.class, modelMapper, "No Categories Found");
         return CategoryResponse.builder()
                 .content(categories)
                 .page(pageNumber)

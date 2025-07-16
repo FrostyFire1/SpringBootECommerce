@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.payload;
 
+import com.frosty.SpringBootECommerce.configuration.AppConstants;
 import com.frosty.SpringBootECommerce.model.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,6 @@ public class ProductDTO {
     private Double discount = 0.0;
     private Double specialPrice;
     private Long sellerId;
-    private String image;
+    private String image = AppConstants.DEFAULT_IMAGE_NAME;
     private Category category;
 }
