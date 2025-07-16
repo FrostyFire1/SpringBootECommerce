@@ -12,6 +12,7 @@ import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class ProductServiceProvider implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileService fileService;
+    @Value("${project.image}")
+    private String imagePath;
 
     @Override
     public ProductDTO addProduct(ProductDTO productDTO, Long categoryId) {
@@ -130,23 +136,9 @@ public class ProductServiceProvider implements ProductService {
                 .findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
-        String fileName = uploadImage(AppConstants.IMAGE_DIRECTORY, image);
+        String fileName = fileService.uploadFile(imagePath, image);
         product.setImage(fileName);
         product = productRepository.save(product);
         return modelMapper.map(product, ProductDTO.class);
-    }
-    private String uploadImage(String path, MultipartFile image) throws IOException {
-        String fileName = image.getOriginalFilename();
-        String randomId = UUID.randomUUID().toString();
-        String actualFileName = randomId.concat(fileName.substring(fileName.lastIndexOf('.')));
-
-        String filePath = path + File.separator + actualFileName;
-        File directory = new File(path);
-        if(!directory.exists()){
-            directory.mkdirs();
-        }
-
-        Files.copy(image.getInputStream(), Path.of(filePath));
-        return actualFileName;
     }
 }

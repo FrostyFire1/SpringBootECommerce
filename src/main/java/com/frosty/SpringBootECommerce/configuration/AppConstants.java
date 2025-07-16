@@ -7,5 +7,4 @@ public class AppConstants {
     public static final String SORT_BY_PRODUCTS = "id";
     public static final String SORT_ORDER = "asc";
     public static final String DEFAULT_IMAGE_NAME = "default.png";
-    public static final String IMAGE_DIRECTORY = "images";
 }
