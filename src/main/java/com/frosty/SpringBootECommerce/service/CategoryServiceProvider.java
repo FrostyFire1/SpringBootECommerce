@@ -7,6 +7,7 @@ import com.frosty.SpringBootECommerce.payload.CategoryDTO;
 import com.frosty.SpringBootECommerce.payload.CategoryResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
+import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,9 @@ public class CategoryServiceProvider implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -51,6 +55,9 @@ public class CategoryServiceProvider implements CategoryService {
     public CategoryDTO deleteCategory(Long categoryId) {
         Category toRemove = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category","categoryId", categoryId));
+        if(productRepository.existsByCategory_Id(categoryId)) {
+            throw new APIException("Cannot delete category with id " + categoryId + " because it contains products");
+        }
         categoryRepository.delete(toRemove);
         return modelMapper.map(toRemove, CategoryDTO.class);
     }
