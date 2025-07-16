@@ -4,6 +4,7 @@ import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
 import com.frosty.SpringBootECommerce.model.Category;
 import com.frosty.SpringBootECommerce.model.Product;
+import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.payload.ProductResponse;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
@@ -38,10 +39,10 @@ public class ProductServiceProvider implements ProductService {
     }
 
     @Override
-    public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+    public ContentResponse<ProductDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
         Page<Product> productPage = GlobalServiceHelper.getAllItems(pageNumber, pageSize, sortBy, sortOrder, productRepository);
         List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage, ProductDTO.class, modelMapper, "No Products Found");
-        return ProductResponse.builder()
+        return ContentResponse.<ProductDTO>builder()
                 .content(products)
                 .pageNumber(pageNumber)
                 .pageSize(pageSize)
@@ -71,13 +72,11 @@ public class ProductServiceProvider implements ProductService {
 
     @Override
     public ProductResponse getProductsByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Page<Product> productPage = GlobalServiceHelper.getAllItems(pageNumber, pageSize, sortBy, sortOrder, productRepository);
+        Page<Product> productPage = GlobalServiceHelper.getAllItemsBy(pageNumber, pageSize, sortBy, sortOrder, productRepository::findByNameLikeIgnoreCase, '%' + keyword + '%');
         List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage,
                 ProductDTO.class,
                 modelMapper,
-                "No Products Found",
-                product -> product.getName().toLowerCase().contains(keyword.toLowerCase()));
-
+                "No Products Found");
         return ProductResponse.builder()
                 .content(products)
                 .pageNumber(pageNumber)
@@ -90,6 +89,22 @@ public class ProductServiceProvider implements ProductService {
 
     @Override
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
-        return null;
+        Product saved = productRepository
+                .findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        Category category = saved.getCategory();
+        if(productDTO.getCategory() != null){
+            category = categoryRepository
+                    .findById(productDTO.getCategory().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", productDTO.getCategory().getId()));
+        }
+
+        Product product = modelMapper.map(productDTO, Product.class);
+        product.setId(productId);
+        product.setSpecialPrice(product.getPrice() * (1 -  (product.getDiscount()/100)));
+        product.setCategory(category);
+
+        product = productRepository.save(product);
+        return modelMapper.map(product, ProductDTO.class);
     }
 }

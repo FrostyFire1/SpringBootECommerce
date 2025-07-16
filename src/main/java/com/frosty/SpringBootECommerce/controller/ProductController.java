@@ -1,6 +1,7 @@
 package com.frosty.SpringBootECommerce.controller;
 
 import com.frosty.SpringBootECommerce.configuration.AppConstants;
+import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.payload.ProductResponse;
 import com.frosty.SpringBootECommerce.service.ProductService;
@@ -22,10 +23,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.addProduct(productDTO, categoryId), HttpStatus.CREATED);
     }
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getAllProducts(@RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false) Integer pageNumber,
-                                                          @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                          @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_PRODUCTS, required = false) String sortBy,
-                                                          @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
+    public ResponseEntity<ContentResponse<ProductDTO>> getAllProducts(@RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false) Integer pageNumber,
+                                                                      @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                                      @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_PRODUCTS, required = false) String sortBy,
+                                                                      @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
     ) {
         return ResponseEntity.ok(productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder));
     }
@@ -48,7 +49,8 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductsByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder));
     }
     @PutMapping("/admin/products/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId, @RequestBody @Valid ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,
+                                                    @RequestBody @Valid ProductDTO productDTO) {
         return ResponseEntity.ok(productService.updateProduct(productId, productDTO));
     }
 }
