@@ -43,7 +43,7 @@ public class ProductServiceProvider implements ProductService {
         List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage, ProductDTO.class, modelMapper, "No Products Found");
         return ProductResponse.builder()
                 .content(products)
-                .page(pageNumber)
+                .pageNumber(pageNumber)
                 .pageSize(pageSize)
                 .totalElements(productPage.getTotalElements())
                 .totalPages(productPage.getTotalPages())
@@ -61,11 +61,35 @@ public class ProductServiceProvider implements ProductService {
 
         return ProductResponse.builder()
                 .content(products)
-                .page(pageNumber)
+                .pageNumber(pageNumber)
                 .pageSize(pageSize)
                 .totalElements(productPage.getTotalElements())
                 .totalPages(productPage.getTotalPages())
                 .lastPage(productPage.isLast())
                 .build();
+    }
+
+    @Override
+    public ProductResponse getProductsByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Page<Product> productPage = GlobalServiceHelper.getAllItems(pageNumber, pageSize, sortBy, sortOrder, productRepository);
+        List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage,
+                ProductDTO.class,
+                modelMapper,
+                "No Products Found",
+                product -> product.getName().toLowerCase().contains(keyword.toLowerCase()));
+
+        return ProductResponse.builder()
+                .content(products)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .totalElements(productPage.getTotalElements())
+                .totalPages(productPage.getTotalPages())
+                .lastPage(productPage.isLast())
+                .build();
+    }
+
+    @Override
+    public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
+        return null;
     }
 }

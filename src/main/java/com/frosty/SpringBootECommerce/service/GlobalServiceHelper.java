@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class GlobalServiceHelper {
@@ -45,12 +46,20 @@ public class GlobalServiceHelper {
         return findByCriteria.apply(criteria, pageDetails);
     }
     public static<T, TDTO> List<TDTO> getDTOContent(Page<T> page,
-                                           Class<TDTO> dtoClass,
-                                           ModelMapper modelMapper,
-                                           String exceptionMessage){
+                                                    Class<TDTO> dtoClass,
+                                                    ModelMapper modelMapper,
+                                                    String exceptionMessage){
+        return getDTOContent(page, dtoClass, modelMapper, exceptionMessage, t -> true);
+    }
+    public static<T, TDTO> List<TDTO> getDTOContent(Page<T> page,
+                                                    Class<TDTO> dtoClass,
+                                                    ModelMapper modelMapper,
+                                                    String exceptionMessage,
+                                                    Predicate<T> filter){
         List<TDTO> list = page
                 .getContent()
                 .stream()
+                .filter(filter)
                 .map(product -> modelMapper.map(product, dtoClass))
                 .toList();
         if(list.isEmpty()){

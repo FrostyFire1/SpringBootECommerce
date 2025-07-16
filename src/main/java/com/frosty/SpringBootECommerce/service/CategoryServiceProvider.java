@@ -29,7 +29,7 @@ public class CategoryServiceProvider implements CategoryService {
         List<CategoryDTO> categories = GlobalServiceHelper.getDTOContent(categoryPage, CategoryDTO.class, modelMapper, "No Categories Found");
         return CategoryResponse.builder()
                 .content(categories)
-                .page(pageNumber)
+                .pageNumber(pageNumber)
                 .pageSize(pageSize)
                 .totalElements(categoryPage.getTotalElements())
                 .totalPages(categoryPage.getTotalPages())
