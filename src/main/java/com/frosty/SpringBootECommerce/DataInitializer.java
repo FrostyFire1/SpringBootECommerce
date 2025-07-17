@@ -29,9 +29,9 @@ public class DataInitializer {
                     100.00,
                     10.0,
                     90.00,
-                    1L,
                     "whatever",
-                    category));
+                    category,
+                    null));
         };
     }
 }

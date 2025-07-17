@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,14 @@ public class Product {
     private Double price;
     private Double discount;
     private Double specialPrice;
-    private Long sellerId;
     private String image;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User user;
 
 }

@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce;
 
+import com.frosty.SpringBootECommerce.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
