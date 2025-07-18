@@ -1,4 +1,4 @@
-package com.frosty.SpringBootECommerce.security;
+package com.frosty.SpringBootECommerce.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

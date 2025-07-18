@@ -3,6 +3,7 @@ package com.frosty.SpringBootECommerce.security.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.ResponseCookie;
 
 import java.util.List;
 
@@ -11,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class LoginResponse {
     private Long id;
-    private String jwtToken;
-
     private String username;
     private List<String> roles;
 }

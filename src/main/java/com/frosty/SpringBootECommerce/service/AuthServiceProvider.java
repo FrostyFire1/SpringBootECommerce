@@ -6,14 +6,16 @@ import com.frosty.SpringBootECommerce.model.Role;
 import com.frosty.SpringBootECommerce.model.User;
 import com.frosty.SpringBootECommerce.repository.RoleRepository;
 import com.frosty.SpringBootECommerce.repository.UserRepository;
-import com.frosty.SpringBootECommerce.security.JwtUtils;
+import com.frosty.SpringBootECommerce.security.jwt.JwtUtils;
 import com.frosty.SpringBootECommerce.security.request.LoginRequest;
 import com.frosty.SpringBootECommerce.security.request.SignupRequest;
 import com.frosty.SpringBootECommerce.security.response.LoginResponse;
 import com.frosty.SpringBootECommerce.security.response.MessageResponse;
 import com.frosty.SpringBootECommerce.security.service.UserDetailsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,13 +62,15 @@ public class AuthServiceProvider implements AuthService {
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsProvider user = (UserDetailsProvider) authentication.getPrincipal();
-        String jwt = jwtUtils.generateTokenFromUsername(user);
+        ResponseCookie jwt = jwtUtils.generateJwtCookie(user);
 
         List<String> roles = user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
-        return ResponseEntity.ok(new LoginResponse(user.getId(), user.getUsername(), jwt, roles));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwt.toString())
+                .body(new LoginResponse(user.getId(), user.getUsername(), roles));
 
     }
 
