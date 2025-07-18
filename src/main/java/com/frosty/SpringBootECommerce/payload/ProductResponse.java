@@ -6,6 +6,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Deprecated
 public class ProductResponse {
     private List<ProductDTO> content;
     private Integer pageNumber;

@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.List;
 @Builder
 @Getter
+@Deprecated
 public class CategoryResponse {
     private List<CategoryDTO> content;
     private Integer pageNumber;
