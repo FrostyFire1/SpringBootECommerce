@@ -18,8 +18,13 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request){
+    public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest request){
         return authService.authenticateUser(request);
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<APIResponse> logoutUser(){
+        return authService.logoutUser();
     }
 
     @PostMapping("/signup")
@@ -31,6 +36,7 @@ public class AuthController {
     public ResponseEntity<APIResponse> getUsernameFromAuth(Authentication auth){
         return ResponseEntity.ok(new APIResponse(authService.getUsernameFromAuth(auth), true));
     }
+
     @GetMapping("/user")
     public ResponseEntity<UserDetailsResponse> getUserDetailsFromAuth(Authentication auth){
         return ResponseEntity.ok(authService.getUserDetailsFromAuth(auth));

@@ -4,6 +4,7 @@ import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.model.AppRole;
 import com.frosty.SpringBootECommerce.model.Role;
 import com.frosty.SpringBootECommerce.model.User;
+import com.frosty.SpringBootECommerce.payload.APIResponse;
 import com.frosty.SpringBootECommerce.repository.RoleRepository;
 import com.frosty.SpringBootECommerce.repository.UserRepository;
 import com.frosty.SpringBootECommerce.security.jwt.JwtUtils;
@@ -74,6 +75,13 @@ public class AuthServiceProvider implements AuthService {
     }
 
     @Override
+    public ResponseEntity<APIResponse> logoutUser() {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtUtils.generateCleanCookie().toString())
+                .body(new APIResponse("Logged out successfully.", true));
+    }
+
+    @Override
     public ResponseEntity<?> registerUser(SignupRequest request) {
         if(userRepository.existsByUsername(request.getUsername())){
             return ResponseEntity.badRequest()
@@ -120,6 +128,7 @@ public class AuthServiceProvider implements AuthService {
 
     @Override
     public UserDetailsResponse getUserDetailsFromAuth(Authentication auth) {
+        if(auth == null)  throw new APIException("You're not authenticated!");
         UserDetailsProvider user = (UserDetailsProvider) auth.getPrincipal();
         List<String> roles = user.getAuthorities()
                 .stream()

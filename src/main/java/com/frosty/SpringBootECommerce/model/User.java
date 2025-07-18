@@ -2,12 +2,12 @@ package com.frosty.SpringBootECommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -55,8 +55,14 @@ public class User {
     private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            orphanRemoval = true, mappedBy = "user")
+            orphanRemoval = true, mappedBy = "seller")
     private Set<Product> products;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true)
+    private Cart cart;
 
     public User(String username, String email, String password) {
         this.username = username;

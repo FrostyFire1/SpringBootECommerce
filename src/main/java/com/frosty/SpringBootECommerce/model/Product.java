@@ -1,11 +1,12 @@
 package com.frosty.SpringBootECommerce.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,6 +15,7 @@ import org.hibernate.annotations.Cascade;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
     private String name;
     private String description;
@@ -29,6 +31,10 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
-    private User user;
+    private User seller;
 
+    @OneToMany(mappedBy = "product",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.EAGER)
+    private Set<CartItem> cartItems = new HashSet<>();
 }
