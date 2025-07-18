@@ -10,7 +10,7 @@ import lombok.ToString;
 
 import java.util.Set;
 
-@Entity
+@Entity(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,8 +24,7 @@ public class Role {
     @ToString.Exclude
     private AppRole role;
 
-    @ManyToMany(mappedBy = "roles")
-    @ToString.Exclude
-    @JsonIgnore
-    private Set<User> users;
+    public Role(AppRole appRole) {
+        this.role = appRole;
+    }
 }

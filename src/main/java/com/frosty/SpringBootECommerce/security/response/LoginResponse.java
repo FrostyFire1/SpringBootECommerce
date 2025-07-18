@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse {
+    private Long id;
     private String jwtToken;
 
     private String username;
