@@ -1,22 +1,16 @@
 package com.frosty.SpringBootECommerce.service;
 
 import com.frosty.SpringBootECommerce.exception.APIException;
-import com.frosty.SpringBootECommerce.payload.ProductDTO;
-import com.frosty.SpringBootECommerce.payload.ProductResponse;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class GlobalServiceHelper {
     private static Pageable getPageDetails(Integer pageNumber,

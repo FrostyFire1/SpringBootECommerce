@@ -3,7 +3,6 @@ package com.frosty.SpringBootECommerce.controller;
 import com.frosty.SpringBootECommerce.configuration.AppConstants;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
-import com.frosty.SpringBootECommerce.payload.ProductResponse;
 import com.frosty.SpringBootECommerce.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder));
     }
     @GetMapping("/public/categories/{categoryId}/products")
-    public ResponseEntity<ProductResponse> getProductsInCategory(@PathVariable Long categoryId,
+    public ResponseEntity<ContentResponse<ProductDTO>> getProductsInCategory(@PathVariable Long categoryId,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
                                                                  @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_PRODUCTS, required = false) String sortBy,
@@ -43,7 +42,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductsInCategory(categoryId, pageNumber, pageSize, sortBy, sortOrder));
     }
     @GetMapping("/public/products/keyword/{keyword}")
-    public ResponseEntity<ProductResponse> getProductsByKeyword(@PathVariable String keyword,
+    public ResponseEntity<ContentResponse<ProductDTO>> getProductsByKeyword(@PathVariable String keyword,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
                                                                  @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_PRODUCTS, required = false) String sortBy,

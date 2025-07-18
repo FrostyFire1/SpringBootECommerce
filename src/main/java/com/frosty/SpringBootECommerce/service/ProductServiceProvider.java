@@ -1,29 +1,22 @@
 package com.frosty.SpringBootECommerce.service;
 
-import com.frosty.SpringBootECommerce.configuration.AppConstants;
 import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
 import com.frosty.SpringBootECommerce.model.Category;
 import com.frosty.SpringBootECommerce.model.Product;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
-import com.frosty.SpringBootECommerce.payload.ProductResponse;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductServiceProvider implements ProductService {
@@ -72,14 +65,14 @@ public class ProductServiceProvider implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductsInCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+    public ContentResponse<ProductDTO> getProductsInCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
         categoryRepository
                 .findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         Page<Product> productPage = GlobalServiceHelper.getAllItemsBy(pageNumber, pageSize, sortBy, sortOrder, productRepository::findByCategory_Id, categoryId);
         List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage, ProductDTO.class, modelMapper, "No Products Found");
 
-        return ProductResponse.builder()
+        return ContentResponse.<ProductDTO>builder()
                 .content(products)
                 .pageNumber(pageNumber)
                 .pageSize(pageSize)
@@ -90,13 +83,13 @@ public class ProductServiceProvider implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductsByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+    public ContentResponse<ProductDTO> getProductsByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
         Page<Product> productPage = GlobalServiceHelper.getAllItemsBy(pageNumber, pageSize, sortBy, sortOrder, productRepository::findByNameLikeIgnoreCase, '%' + keyword + '%');
         List<ProductDTO> products = GlobalServiceHelper.getDTOContent(productPage,
                 ProductDTO.class,
                 modelMapper,
                 "No Products Found");
-        return ProductResponse.builder()
+        return ContentResponse.<ProductDTO>builder()
                 .content(products)
                 .pageNumber(pageNumber)
                 .pageSize(pageSize)
