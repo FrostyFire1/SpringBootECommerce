@@ -1,4 +1,4 @@
-package com.frosty.SpringBootECommerce.security;
+package com.frosty.SpringBootECommerce.security.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
