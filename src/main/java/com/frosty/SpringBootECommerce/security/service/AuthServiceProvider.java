@@ -1,4 +1,4 @@
-package com.frosty.SpringBootECommerce.service;
+package com.frosty.SpringBootECommerce.security.service;
 
 import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.model.AppRole;
@@ -9,9 +9,8 @@ import com.frosty.SpringBootECommerce.repository.UserRepository;
 import com.frosty.SpringBootECommerce.security.jwt.JwtUtils;
 import com.frosty.SpringBootECommerce.security.request.LoginRequest;
 import com.frosty.SpringBootECommerce.security.request.SignupRequest;
-import com.frosty.SpringBootECommerce.security.response.LoginResponse;
+import com.frosty.SpringBootECommerce.security.response.UserDetailsResponse;
 import com.frosty.SpringBootECommerce.security.response.MessageResponse;
-import com.frosty.SpringBootECommerce.security.service.UserDetailsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -70,7 +69,7 @@ public class AuthServiceProvider implements AuthService {
                 .toList();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, jwt.toString())
-                .body(new LoginResponse(user.getId(), user.getUsername(), roles));
+                .body(new UserDetailsResponse(user.getId(), user.getUsername(), roles));
 
     }
 
@@ -93,28 +92,39 @@ public class AuthServiceProvider implements AuthService {
         Set<Role> roles = new HashSet<>();
 
         if(strRoles == null){
-            roles.add(roleRepository.findByRole(AppRole.ROLE_USER)
+            roles.add(roleRepository.findByRole(AppRole.USER)
                     .orElseThrow(() -> new APIException("Couldn't find user role")));
         } else {
             strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        roles.add(roleRepository.findByRole(AppRole.ROLE_ADMIN)
-                            .orElseThrow(() -> new APIException("Couldn't find admin role")));
-                        break;
-                    case "seller":
-                        roles.add(roleRepository.findByRole(AppRole.ROLE_SELLER)
-                                .orElseThrow(() -> new APIException("Couldn't find seller role")));
-                        break;
-                    default:
-                        roles.add(roleRepository.findByRole(AppRole.ROLE_USER)
-                                .orElseThrow(() -> new APIException("Couldn't find user role")));
-                        break;
+                Role appRole;
+                try{
+                    appRole = roleRepository.findByRole(AppRole.valueOf(role.toUpperCase()))
+                            .orElseThrow(() -> new APIException("Couldn't find role: " + role));
+                } catch (IllegalArgumentException e){
+                    appRole = roleRepository.findByRole(AppRole.USER)
+                            .orElseThrow(() -> new APIException("Couldn't find user role"));
                 }
+                roles.add(appRole);
             });
         }
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
+    }
+
+    @Override
+    public String getUsernameFromAuth(Authentication auth) {
+        if (auth == null) throw new APIException("You're not authenticated!");
+        return auth.getName();
+    }
+
+    @Override
+    public UserDetailsResponse getUserDetailsFromAuth(Authentication auth) {
+        UserDetailsProvider user = (UserDetailsProvider) auth.getPrincipal();
+        List<String> roles = user.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        return new UserDetailsResponse(user.getId(), user.getUsername(), roles);
     }
 }

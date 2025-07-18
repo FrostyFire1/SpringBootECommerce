@@ -93,21 +93,21 @@ public class WebSecurityConfig {
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Retrieve or create roles
-            Role userRole = roleRepository.findByRole(AppRole.ROLE_USER)
+            Role userRole = roleRepository.findByRole(AppRole.USER)
                     .orElseGet(() -> {
-                        Role newUserRole = new Role(AppRole.ROLE_USER);
+                        Role newUserRole = new Role(AppRole.USER);
                         return roleRepository.save(newUserRole);
                     });
 
-            Role sellerRole = roleRepository.findByRole(AppRole.ROLE_SELLER)
+            Role sellerRole = roleRepository.findByRole(AppRole.SELLER)
                     .orElseGet(() -> {
-                        Role newSellerRole = new Role(AppRole.ROLE_SELLER);
+                        Role newSellerRole = new Role(AppRole.SELLER);
                         return roleRepository.save(newSellerRole);
                     });
 
-            Role adminRole = roleRepository.findByRole(AppRole.ROLE_ADMIN)
+            Role adminRole = roleRepository.findByRole(AppRole.ADMIN)
                     .orElseGet(() -> {
-                        Role newAdminRole = new Role(AppRole.ROLE_ADMIN);
+                        Role newAdminRole = new Role(AppRole.ADMIN);
                         return roleRepository.save(newAdminRole);
                     });
 
