@@ -17,7 +17,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetailsProvider implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,12 +28,12 @@ public class UserDetailsProvider implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailsProvider from(User user){
+    public static UserDetailsImpl from(User user){
         List<SimpleGrantedAuthority> authorities = user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
                 .toList();
-        return new UserDetailsProvider(user.getId(),
+        return new UserDetailsImpl(user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
@@ -80,7 +80,7 @@ public class UserDetailsProvider implements UserDetails {
     public boolean equals(Object o) {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
-        UserDetailsProvider that = (UserDetailsProvider) o;
+        UserDetailsImpl that = (UserDetailsImpl) o;
         return Objects.equals(this.id, that.id);
     }
 }

@@ -6,7 +6,6 @@ import com.frosty.SpringBootECommerce.model.Cart;
 import com.frosty.SpringBootECommerce.model.CartItem;
 import com.frosty.SpringBootECommerce.model.Product;
 import com.frosty.SpringBootECommerce.payload.CartDTO;
-import com.frosty.SpringBootECommerce.payload.CartItemDTO;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.repository.CartItemRepository;
 import com.frosty.SpringBootECommerce.repository.CartRepository;
@@ -20,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CartServiceProvider implements CartService{
+public class CartServiceImpl implements CartService{
     @Autowired
     private CartRepository cartRepository;
 

@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 @Service
-public class FileServiceProvider implements FileService{
+public class FileServiceImpl implements FileService{
     @Override
     public String uploadFile(String path, MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();

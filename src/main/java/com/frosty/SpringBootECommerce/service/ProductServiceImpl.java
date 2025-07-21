@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ProductServiceProvider implements ProductService {
+public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired

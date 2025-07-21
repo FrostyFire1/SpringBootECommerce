@@ -1,6 +1,6 @@
 package com.frosty.SpringBootECommerce.security.jwt;
 
-import com.frosty.SpringBootECommerce.security.service.UserDetailsProvider;
+import com.frosty.SpringBootECommerce.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -42,7 +42,7 @@ public class JwtUtils {
         return cookie.getValue();
     }
 
-    public ResponseCookie generateJwtCookie(UserDetailsProvider userDetails){
+    public ResponseCookie generateJwtCookie(UserDetailsImpl userDetails){
         String jwt = generateTokenFromUsername(userDetails);
         logger.debug("Generating JWT cookie for user: {} ", userDetails.getUsername());
         return ResponseCookie.from(jwtCookie, jwt)

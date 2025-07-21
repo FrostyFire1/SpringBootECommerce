@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class AuthServiceProvider implements AuthService {
+public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -61,7 +61,7 @@ public class AuthServiceProvider implements AuthService {
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetailsProvider user = (UserDetailsProvider) authentication.getPrincipal();
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         ResponseCookie jwt = jwtUtils.generateJwtCookie(user);
 
         List<String> roles = user.getAuthorities()
@@ -129,7 +129,7 @@ public class AuthServiceProvider implements AuthService {
     @Override
     public UserDetailsResponse getUserDetailsFromAuth(Authentication auth) {
         if(auth == null)  throw new APIException("You're not authenticated!");
-        UserDetailsProvider user = (UserDetailsProvider) auth.getPrincipal();
+        UserDetailsImpl user = (UserDetailsImpl) auth.getPrincipal();
         List<String> roles = user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)

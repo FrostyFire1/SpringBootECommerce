@@ -7,7 +7,7 @@ import com.frosty.SpringBootECommerce.repository.RoleRepository;
 import com.frosty.SpringBootECommerce.repository.UserRepository;
 import com.frosty.SpringBootECommerce.security.jwt.AuthEntryPointJwt;
 import com.frosty.SpringBootECommerce.security.jwt.AuthTokenFilter;
-import com.frosty.SpringBootECommerce.security.service.UserDetailsServiceProvider;
+import com.frosty.SpringBootECommerce.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +30,9 @@ import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig{
     @Autowired
-    private UserDetailsServiceProvider userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt  unauthorizedHandler;

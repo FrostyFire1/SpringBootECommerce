@@ -1,6 +1,6 @@
 package com.frosty.SpringBootECommerce.security.jwt;
 
-import com.frosty.SpringBootECommerce.security.service.UserDetailsServiceProvider;
+import com.frosty.SpringBootECommerce.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceProvider userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
