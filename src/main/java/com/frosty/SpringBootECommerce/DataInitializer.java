@@ -26,7 +26,7 @@ public class DataInitializer {
                     null,
                     "Blue Suit No Tie",
                     "It's a suit without a tie (duh)",
-                    1,
+                    11,
                     100.00,
                     10.0,
                     90.00,

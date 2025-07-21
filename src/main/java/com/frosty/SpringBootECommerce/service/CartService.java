@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.service;
 
+import com.frosty.SpringBootECommerce.payload.APIResponse;
 import com.frosty.SpringBootECommerce.payload.CartDTO;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 
@@ -10,4 +11,8 @@ public interface CartService {
     ContentResponse<CartDTO> getAllCarts();
 
     CartDTO getUserCartDTO();
+
+    CartDTO updateProductInCart(Long productId, String operation);
+
+    APIResponse deleteItemFromCart(Long cartId, Long productId);
 }

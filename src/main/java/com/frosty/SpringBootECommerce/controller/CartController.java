@@ -1,5 +1,6 @@
 package com.frosty.SpringBootECommerce.controller;
 
+import com.frosty.SpringBootECommerce.payload.APIResponse;
 import com.frosty.SpringBootECommerce.payload.CartDTO;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.service.CartService;
@@ -19,6 +20,11 @@ public class CartController {
         return new ResponseEntity<>(cartService.addProductToCart(productId, quantity), HttpStatus.CREATED);
     }
 
+    @PutMapping("/carts/products/{productId}/quantity/{operation}")
+    public ResponseEntity<CartDTO> updateProductInCart(@PathVariable Long productId, @PathVariable String operation) {
+        return ResponseEntity.ok(cartService.updateProductInCart(productId, operation));
+    }
+
     @GetMapping("/carts")
     public ResponseEntity<ContentResponse<CartDTO>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCarts());
@@ -27,5 +33,10 @@ public class CartController {
     @GetMapping("/carts/users/cart")
     public ResponseEntity<CartDTO> getUserCart() {
         return ResponseEntity.ok(cartService.getUserCartDTO());
+    }
+
+    @DeleteMapping("/carts/{cartId}/product/{productId}")
+    public ResponseEntity<APIResponse> deleteItemFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        return ResponseEntity.ok(cartService.deleteItemFromCart(cartId, productId));
     }
 }
