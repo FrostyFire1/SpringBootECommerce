@@ -1,17 +1,16 @@
 package com.frosty.SpringBootECommerce.payload;
 
-import com.frosty.SpringBootECommerce.model.Category;
+import java.util.List;
 import lombok.*;
 
-import java.util.List;
 @Builder
 @Getter
 @Deprecated
 public class CategoryResponse {
-    private List<CategoryDTO> content;
-    private Integer pageNumber;
-    private Integer pageSize;
-    private Long totalElements;
-    private Integer totalPages;
-    private Boolean lastPage;
+  private List<CategoryDTO> content;
+  private Integer pageNumber;
+  private Integer pageSize;
+  private Long totalElements;
+  private Integer totalPages;
+  private Boolean lastPage;
 }

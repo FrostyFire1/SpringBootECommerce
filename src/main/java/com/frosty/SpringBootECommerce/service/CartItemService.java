@@ -1,4 +1,3 @@
 package com.frosty.SpringBootECommerce.service;
 
-public interface CartItemService {
-}
+public interface CartItemService {}
