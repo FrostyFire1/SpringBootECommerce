@@ -23,4 +23,9 @@ public class CartController {
     public ResponseEntity<ContentResponse<CartDTO>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCarts());
     }
+
+    @GetMapping("/carts/users/cart")
+    public ResponseEntity<CartDTO> getUserCart() {
+        return ResponseEntity.ok(cartService.getUserCartDTO());
+    }
 }

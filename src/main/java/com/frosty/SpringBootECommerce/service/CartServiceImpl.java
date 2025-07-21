@@ -34,7 +34,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO addProductToCart(Long productId, Integer quantity) {
-        Cart cart = this.getUserCart();
+        Cart cart = cartRepository
+                .findByUser_Email(authUtil.getPrincipalEmail())
+                .orElseGet(() -> new Cart(0.0, authUtil.getPrincipal()));
 
         Product product = productRepository
                 .findById(productId)
@@ -73,12 +75,6 @@ public class CartServiceImpl implements CartService {
         return cartDTO;
     }
 
-    public Cart getUserCart() {
-        return cartRepository
-                .findByUser_Email(authUtil.getPrincipalEmail())
-                .orElse(new Cart(0.0, authUtil.getPrincipal()));
-    }
-
     @Override
     public ContentResponse<CartDTO> getAllCarts() {
         List<CartDTO> cartDTOS = cartRepository.findAll().stream()
@@ -102,5 +98,15 @@ public class CartServiceImpl implements CartService {
                     return productDTO;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public CartDTO getUserCartDTO() {
+        Cart cart = cartRepository
+                .findByUser_Email(authUtil.getPrincipalEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Cart", "email", authUtil.getPrincipalEmail()));
+        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+        cartDTO.setProducts(getProductsFromCart(cart));
+        return cartDTO;
     }
 }
