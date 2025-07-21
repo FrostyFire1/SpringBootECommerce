@@ -5,17 +5,16 @@ import com.frosty.SpringBootECommerce.model.Product;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@AllArgsConstructor
 public class DataInitializer {
-    @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
     private ProductRepository productRepository;
 
     @Bean

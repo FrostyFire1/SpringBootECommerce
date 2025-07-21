@@ -11,7 +11,6 @@ import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import java.io.IOException;
 import java.util.List;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -19,20 +18,27 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private FileService fileService;
+    private final FileService fileService;
 
     @Value("${project.image}")
     private String imagePath;
+
+    public ProductServiceImpl(
+            ProductRepository productRepository,
+            CategoryRepository categoryRepository,
+            ModelMapper modelMapper,
+            FileService fileService) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
+        this.fileService = fileService;
+    }
 
     @Override
     public ProductDTO addProduct(ProductDTO productDTO, Long categoryId) {
