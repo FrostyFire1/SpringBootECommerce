@@ -14,30 +14,31 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  @Autowired private AuthService authService;
+    @Autowired
+    private AuthService authService;
 
-  @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest request) {
-    return authService.authenticateUser(request);
-  }
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest request) {
+        return authService.authenticateUser(request);
+    }
 
-  @PostMapping("/signout")
-  public ResponseEntity<APIResponse> logoutUser() {
-    return authService.logoutUser();
-  }
+    @PostMapping("/signout")
+    public ResponseEntity<APIResponse> logoutUser() {
+        return authService.logoutUser();
+    }
 
-  @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@RequestBody @Valid SignupRequest request) {
-    return authService.registerUser(request);
-  }
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody @Valid SignupRequest request) {
+        return authService.registerUser(request);
+    }
 
-  @GetMapping("/username")
-  public ResponseEntity<APIResponse> getUsernameFromAuth(Authentication auth) {
-    return ResponseEntity.ok(new APIResponse(authService.getUsernameFromAuth(auth), true));
-  }
+    @GetMapping("/username")
+    public ResponseEntity<APIResponse> getUsernameFromAuth(Authentication auth) {
+        return ResponseEntity.ok(new APIResponse(authService.getUsernameFromAuth(auth), true));
+    }
 
-  @GetMapping("/user")
-  public ResponseEntity<UserDetailsResponse> getUserDetailsFromAuth(Authentication auth) {
-    return ResponseEntity.ok(authService.getUserDetailsFromAuth(auth));
-  }
+    @GetMapping("/user")
+    public ResponseEntity<UserDetailsResponse> getUserDetailsFromAuth(Authentication auth) {
+        return ResponseEntity.ok(authService.getUserDetailsFromAuth(auth));
+    }
 }

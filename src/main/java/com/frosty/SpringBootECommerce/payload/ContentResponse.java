@@ -7,10 +7,10 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ContentResponse<T> {
-  private List<T> content;
-  private Integer pageNumber;
-  private Integer pageSize;
-  private Long totalElements;
-  private Integer totalPages;
-  private Boolean lastPage;
+    private List<T> content;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private Boolean lastPage;
 }

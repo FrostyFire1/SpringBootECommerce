@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
 public interface AuthService {
-  ResponseEntity<?> registerUser(@Valid SignupRequest request);
+    ResponseEntity<?> registerUser(@Valid SignupRequest request);
 
-  ResponseEntity<?> authenticateUser(LoginRequest request);
+    ResponseEntity<?> authenticateUser(LoginRequest request);
 
-  String getUsernameFromAuth(Authentication auth);
+    String getUsernameFromAuth(Authentication auth);
 
-  UserDetailsResponse getUserDetailsFromAuth(Authentication auth);
+    UserDetailsResponse getUserDetailsFromAuth(Authentication auth);
 
-  ResponseEntity<APIResponse> logoutUser();
+    ResponseEntity<APIResponse> logoutUser();
 }

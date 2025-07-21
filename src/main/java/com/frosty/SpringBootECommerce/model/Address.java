@@ -14,36 +14,48 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private int apartmentNumber;
-  @NotNull private int houseNumber;
-  @NotBlank private String street;
-  @NotBlank private String city;
-  @NotBlank private String postalCode;
-  @NotBlank private String province;
-  @NotBlank private String country;
+    private int apartmentNumber;
 
-  @ManyToMany(mappedBy = "addresses")
-  @ToString.Exclude
-  private Set<User> users;
+    @NotNull
+    private int houseNumber;
 
-  public Address(
-      int apartmentNumber,
-      int houseNumber,
-      String street,
-      String city,
-      String postalCode,
-      String province,
-      String country) {
-    this.apartmentNumber = apartmentNumber;
-    this.houseNumber = houseNumber;
-    this.street = street;
-    this.city = city;
-    this.postalCode = postalCode;
-    this.province = province;
-    this.country = country;
-  }
+    @NotBlank
+    private String street;
+
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String postalCode;
+
+    @NotBlank
+    private String province;
+
+    @NotBlank
+    private String country;
+
+    @ManyToMany(mappedBy = "addresses")
+    @ToString.Exclude
+    private Set<User> users;
+
+    public Address(
+            int apartmentNumber,
+            int houseNumber,
+            String street,
+            String city,
+            String postalCode,
+            String province,
+            String country) {
+        this.apartmentNumber = apartmentNumber;
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.province = province;
+        this.country = country;
+    }
 }

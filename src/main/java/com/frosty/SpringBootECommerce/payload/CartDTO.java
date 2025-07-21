@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartDTO {
-  private Long id;
-  private Double totalPrice = 0.0;
-  private Set<ProductDTO> products = new HashSet<>();
+    private Long id;
+    private Double totalPrice = 0.0;
+    private Set<ProductDTO> products = new HashSet<>();
 }

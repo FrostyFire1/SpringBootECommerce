@@ -12,12 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignupRequest {
-  @NotBlank private String username;
-  @NotBlank @Email private String email;
+    @NotBlank
+    private String username;
 
-  @NotBlank
-  @Size(min = 7, max = 128)
-  private String password;
+    @NotBlank
+    @Email
+    private String email;
 
-  private Set<String> roles;
+    @NotBlank
+    @Size(min = 7, max = 128)
+    private String password;
+
+    private Set<String> roles;
 }

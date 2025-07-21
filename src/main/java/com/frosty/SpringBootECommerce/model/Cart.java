@@ -12,25 +12,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "cart_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private Long id;
 
-  private Double totalPrice;
+    private Double totalPrice;
 
-  @OneToMany(
-      mappedBy = "cart",
-      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-      orphanRemoval = true)
-  Set<CartItem> cartItems = new HashSet<>();
+    @OneToMany(
+            mappedBy = "cart",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            orphanRemoval = true)
+    Set<CartItem> cartItems = new HashSet<>();
 
-  @OneToOne
-  @JoinColumn(name = "user_id")
-  private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-  public Cart(Double totalPrice, User user) {
-    this.totalPrice = totalPrice;
-    this.user = user;
-  }
+    public Cart(Double totalPrice, User user) {
+        this.totalPrice = totalPrice;
+        this.user = user;
+    }
 }

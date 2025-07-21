@@ -14,15 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @NotBlank
-  @Size(min = 5, message = "Category name must be at least 5 characters long")
-  private String categoryName;
+    @NotBlank
+    @Size(min = 5, message = "Category name must be at least 5 characters long")
+    private String categoryName;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-  @JsonIgnore
-  private List<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Product> products;
 }

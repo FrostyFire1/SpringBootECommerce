@@ -12,14 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-  private Long id;
-  @NotBlank private String name;
-  @NotBlank private String description;
-  @NotNull private Integer quantity;
-  @NotNull private Double price;
-  private Double discount = 0.0;
-  private Double specialPrice;
-  private Long sellerId;
-  private String image = AppConstants.DEFAULT_IMAGE_NAME;
-  private Category category;
+    private Long id;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String description;
+
+    @NotNull
+    private Integer quantity;
+
+    @NotNull
+    private Double price;
+
+    private Double discount = 0.0;
+    private Double specialPrice;
+    private Long sellerId;
+    private String image = AppConstants.DEFAULT_IMAGE_NAME;
+    private Category category;
 }

@@ -11,20 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthUtil {
 
-  @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-  public User getPrincipal() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    return userRepository
-        .findByUsername(auth.getName())
-        .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-  }
+    public User getPrincipal() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository
+                .findByUsername(auth.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+    }
 
-  public String getPrincipalEmail() {
-    return getPrincipal().getEmail();
-  }
+    public String getPrincipalEmail() {
+        return getPrincipal().getEmail();
+    }
 
-  public Long getPrincipalId() {
-    return getPrincipal().getId();
-  }
+    public Long getPrincipalId() {
+        return getPrincipal().getId();
+    }
 }

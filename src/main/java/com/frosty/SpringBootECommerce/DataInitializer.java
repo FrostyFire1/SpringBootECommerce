@@ -12,27 +12,29 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DataInitializer {
-  @Autowired private CategoryRepository categoryRepository;
-  @Autowired private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-  @Bean
-  public CommandLineRunner initDatabase() {
-    return args -> {
-      Category category = new Category(null, "Suits", new ArrayList<>());
-      categoryRepository.save(category);
-      productRepository.save(
-          new Product(
-              null,
-              "Blue Suit No Tie",
-              "It's a suit without a tie (duh)",
-              1,
-              100.00,
-              10.0,
-              90.00,
-              "whatever",
-              category,
-              null,
-              null));
-    };
-  }
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Bean
+    public CommandLineRunner initDatabase() {
+        return args -> {
+            Category category = new Category(null, "Suits", new ArrayList<>());
+            categoryRepository.save(category);
+            productRepository.save(new Product(
+                    null,
+                    "Blue Suit No Tie",
+                    "It's a suit without a tie (duh)",
+                    1,
+                    100.00,
+                    10.0,
+                    90.00,
+                    "whatever",
+                    category,
+                    null,
+                    null));
+        };
+    }
 }

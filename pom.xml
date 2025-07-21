@@ -108,7 +108,7 @@
 				<version>2.45.0</version>
 				<configuration>
 					<java>
-						<googleJavaFormat/>
+						<palantirJavaFormat/>
 					</java>
 				</configuration>
 			</plugin>

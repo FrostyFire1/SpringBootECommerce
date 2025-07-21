@@ -7,10 +7,10 @@ import lombok.*;
 @Getter
 @Deprecated
 public class ProductResponse {
-  private List<ProductDTO> content;
-  private Integer pageNumber;
-  private Integer pageSize;
-  private Long totalElements;
-  private Integer totalPages;
-  private Boolean lastPage;
+    private List<ProductDTO> content;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private Boolean lastPage;
 }

@@ -11,42 +11,36 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
-  private final CategoryService categoryService;
+    private final CategoryService categoryService;
 
-  public CategoryController(CategoryService categoryService) {
-    this.categoryService = categoryService;
-  }
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
-  @GetMapping("/public/categories")
-  public ResponseEntity<ContentResponse<CategoryDTO>> getAllCategories(
-      @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false)
-          Integer pageNumber,
-      @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)
-          Integer pageSize,
-      @RequestParam(
-              name = "sortBy",
-              defaultValue = AppConstants.SORT_BY_CATEGORIES,
-              required = false)
-          String sortBy,
-      @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false)
-          String sortOrder) {
-    return ResponseEntity.ok(
-        categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder));
-  }
+    @GetMapping("/public/categories")
+    public ResponseEntity<ContentResponse<CategoryDTO>> getAllCategories(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE, required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_CATEGORIES, required = false)
+                    String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false)
+                    String sortOrder) {
+        return ResponseEntity.ok(categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder));
+    }
 
-  @PostMapping("/public/categories")
-  public ResponseEntity<CategoryDTO> createNewCategory(@Valid @RequestBody CategoryDTO category) {
-    return new ResponseEntity<>(categoryService.addCategory(category), HttpStatus.CREATED);
-  }
+    @PostMapping("/public/categories")
+    public ResponseEntity<CategoryDTO> createNewCategory(@Valid @RequestBody CategoryDTO category) {
+        return new ResponseEntity<>(categoryService.addCategory(category), HttpStatus.CREATED);
+    }
 
-  @DeleteMapping("/admin/categories/{categoryId}")
-  public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
-    return ResponseEntity.ok(categoryService.deleteCategory(categoryId));
-  }
+    @DeleteMapping("/admin/categories/{categoryId}")
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(categoryService.deleteCategory(categoryId));
+    }
 
-  @PutMapping("/admin/categories/{categoryId}")
-  public ResponseEntity<CategoryDTO> updateCategory(
-      @Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
-    return ResponseEntity.ok(categoryService.updateCategory(categoryDTO, categoryId));
-  }
+    @PutMapping("/admin/categories/{categoryId}")
+    public ResponseEntity<CategoryDTO> updateCategory(
+            @Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
+        return ResponseEntity.ok(categoryService.updateCategory(categoryDTO, categoryId));
+    }
 }

@@ -13,33 +13,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> invalidMethodArgumentHandler(
-      MethodArgumentNotValidException e) {
-    Map<String, String> response = new HashMap<>();
-    e.getBindingResult()
-        .getAllErrors()
-        .forEach(
-            (error) -> {
-              FieldError err = (FieldError) error;
-              response.put(err.getField(), err.getDefaultMessage());
-            });
-    return ResponseEntity.badRequest().body(response);
-  }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> invalidMethodArgumentHandler(MethodArgumentNotValidException e) {
+        Map<String, String> response = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            FieldError err = (FieldError) error;
+            response.put(err.getField(), err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(response);
+    }
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<APIResponse> resourceNotFoundHandler(ResourceNotFoundException e) {
-    return new ResponseEntity<>(new APIResponse(e.getMessage(), false), HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<APIResponse> resourceNotFoundHandler(ResourceNotFoundException e) {
+        return new ResponseEntity<>(new APIResponse(e.getMessage(), false), HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(APIException.class)
-  public ResponseEntity<APIResponse> APIHandler(APIException e) {
-    return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
-  }
+    @ExceptionHandler(APIException.class)
+    public ResponseEntity<APIResponse> APIHandler(APIException e) {
+        return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
+    }
 
-  @ExceptionHandler(MissingServletRequestParameterException.class)
-  public ResponseEntity<APIResponse> missingServletRequestParameterHandler(
-      MissingServletRequestParameterException e) {
-    return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
-  }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<APIResponse> missingServletRequestParameterHandler(
+            MissingServletRequestParameterException e) {
+        return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
+    }
 }
