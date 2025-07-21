@@ -1,7 +1,7 @@
 package com.frosty.SpringBootECommerce.model;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class Cart {
             mappedBy = "cart",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
             orphanRemoval = true)
-    Set<CartItem> cartItems = new HashSet<>();
+    Set<CartItem> cartItems = new LinkedHashSet<>();
 
     @OneToOne
     @JoinColumn(name = "user_id")

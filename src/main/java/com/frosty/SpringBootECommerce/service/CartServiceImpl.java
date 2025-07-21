@@ -6,11 +6,13 @@ import com.frosty.SpringBootECommerce.model.Cart;
 import com.frosty.SpringBootECommerce.model.CartItem;
 import com.frosty.SpringBootECommerce.model.Product;
 import com.frosty.SpringBootECommerce.payload.CartDTO;
+import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
 import com.frosty.SpringBootECommerce.repository.CartItemRepository;
 import com.frosty.SpringBootECommerce.repository.CartRepository;
 import com.frosty.SpringBootECommerce.repository.ProductRepository;
 import com.frosty.SpringBootECommerce.security.util.AuthUtil;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -66,16 +68,8 @@ public class CartServiceImpl implements CartService {
         // Can do it now, but this application will reduce the quantity when the order is placed
         // product.setQuantity(productQuantity - quantity);
 
-        Set<ProductDTO> productDTOS = cart.getCartItems().stream()
-                .map(item -> {
-                    ProductDTO productDTO = modelMapper.map(item.getProduct(), ProductDTO.class);
-                    productDTO.setQuantity(item.getQuantity());
-                    return productDTO;
-                })
-                .collect(Collectors.toSet());
-
         CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
-        cartDTO.setProducts(productDTOS);
+        cartDTO.setProducts(getProductsFromCart(cart));
         return cartDTO;
     }
 
@@ -83,5 +77,30 @@ public class CartServiceImpl implements CartService {
         return cartRepository
                 .findByUser_Email(authUtil.getPrincipalEmail())
                 .orElse(new Cart(0.0, authUtil.getPrincipal()));
+    }
+
+    @Override
+    public ContentResponse<CartDTO> getAllCarts() {
+        List<CartDTO> cartDTOS = cartRepository.findAll().stream()
+                .map(cart -> {
+                    CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+                    cartDTO.setProducts(getProductsFromCart(cart));
+                    return cartDTO;
+                })
+                .toList();
+        if (cartDTOS.isEmpty()) {
+            throw new APIException("No carts found");
+        }
+        return ContentResponse.<CartDTO>builder().content(cartDTOS).build();
+    }
+
+    public Set<ProductDTO> getProductsFromCart(Cart cart) {
+        return cart.getCartItems().stream()
+                .map(item -> {
+                    ProductDTO productDTO = modelMapper.map(item.getProduct(), ProductDTO.class);
+                    productDTO.setQuantity(item.getQuantity());
+                    return productDTO;
+                })
+                .collect(Collectors.toSet());
     }
 }

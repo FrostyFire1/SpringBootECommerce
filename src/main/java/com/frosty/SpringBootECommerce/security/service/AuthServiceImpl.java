@@ -89,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(request.getUsername(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
 
         Set<String> strRoles = request.getRoles();
-        Set<Role> roles = new HashSet<>();
+        Set<Role> roles = new LinkedHashSet<>();
 
         if (strRoles == null) {
             roles.add(roleRepository

@@ -1,7 +1,7 @@
 package com.frosty.SpringBootECommerce.model;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,5 +37,5 @@ public class Product {
             mappedBy = "product",
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.EAGER)
-    private Set<CartItem> cartItems = new HashSet<>();
+    private Set<CartItem> cartItems = new LinkedHashSet<>();
 }

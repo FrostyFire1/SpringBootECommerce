@@ -1,6 +1,7 @@
 package com.frosty.SpringBootECommerce.controller;
 
 import com.frosty.SpringBootECommerce.payload.CartDTO;
+import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,5 +17,10 @@ public class CartController {
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addProductToCart(@PathVariable Long productId, @PathVariable Integer quantity) {
         return new ResponseEntity<>(cartService.addProductToCart(productId, quantity), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/carts")
+    public ResponseEntity<ContentResponse<CartDTO>> getAllCarts() {
+        return ResponseEntity.ok(cartService.getAllCarts());
     }
 }
