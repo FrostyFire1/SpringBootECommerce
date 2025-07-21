@@ -33,12 +33,4 @@ public class Cart {
         this.totalPrice = totalPrice;
         this.user = user;
     }
-
-    public void updateTotal() {
-        double newTotal = 0.0;
-        for (CartItem cartItem : cartItems) {
-            newTotal += cartItem.getQuantity() * cartItem.getProductPrice();
-        }
-        this.totalPrice = newTotal;
-    }
 }

@@ -12,7 +12,9 @@ public interface CartService {
 
     CartDTO getUserCartDTO();
 
-    CartDTO updateProductInCart(Long productId, String operation);
+    CartDTO updateProductQuantityInCart(Long productId, String operation);
 
     APIResponse deleteItemFromCart(Long cartId, Long productId);
+
+    void updateProductInCart(Long id, Long productId);
 }

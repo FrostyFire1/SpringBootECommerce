@@ -22,7 +22,7 @@ public class CartController {
 
     @PutMapping("/carts/products/{productId}/quantity/{operation}")
     public ResponseEntity<CartDTO> updateProductInCart(@PathVariable Long productId, @PathVariable String operation) {
-        return ResponseEntity.ok(cartService.updateProductInCart(productId, operation));
+        return ResponseEntity.ok(cartService.updateProductQuantityInCart(productId, operation));
     }
 
     @GetMapping("/carts")

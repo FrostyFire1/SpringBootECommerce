@@ -2,12 +2,15 @@ package com.frosty.SpringBootECommerce.service;
 
 import com.frosty.SpringBootECommerce.exception.APIException;
 import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
+import com.frosty.SpringBootECommerce.model.Cart;
 import com.frosty.SpringBootECommerce.model.Category;
 import com.frosty.SpringBootECommerce.model.Product;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.payload.ProductDTO;
+import com.frosty.SpringBootECommerce.repository.CartRepository;
 import com.frosty.SpringBootECommerce.repository.CategoryRepository;
 import com.frosty.SpringBootECommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -22,6 +25,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final CategoryRepository categoryRepository;
 
+    private final CartRepository cartRepository;
+
+    private final CartService cartService;
+
     private final ModelMapper modelMapper;
 
     private final FileService fileService;
@@ -32,10 +39,14 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl(
             ProductRepository productRepository,
             CategoryRepository categoryRepository,
+            CartRepository cartRepository,
+            CartService cartService,
             ModelMapper modelMapper,
             FileService fileService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.cartRepository = cartRepository;
+        this.cartService = cartService;
         this.modelMapper = modelMapper;
         this.fileService = fileService;
     }
@@ -130,21 +141,30 @@ public class ProductServiceImpl implements ProductService {
                             "Category", "categoryId", productDTO.getCategory().getId()));
         }
 
-        Product product = modelMapper.map(productDTO, Product.class);
-        product.setId(productId);
-        product.setSpecialPrice(product.getPrice() * (1 - (product.getDiscount() / 100)));
-        product.setCategory(category);
+        saved = modelMapper.map(productDTO, Product.class);
+        saved.setId(productId);
+        saved.setSpecialPrice(saved.getPrice() * (1 - (saved.getDiscount() / 100)));
+        saved.setCategory(category);
 
-        product = productRepository.save(product);
-        return modelMapper.map(product, ProductDTO.class);
+        saved = productRepository.save(saved);
+
+        List<Cart> carts = cartRepository.findByProduct_Id(productId);
+        carts.forEach(cart -> cartService.updateProductInCart(cart.getId(), productId));
+        return modelMapper.map(saved, ProductDTO.class);
     }
 
     @Override
+    @Transactional
     public ProductDTO removeProduct(Long productId) {
         Product product = productRepository
                 .findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-        productRepository.delete(product);
+
+        List<Cart> carts = cartRepository.findByProduct_Id(productId);
+        carts.forEach(cart -> cartService.deleteItemFromCart(cart.getId(), productId));
+
+        productRepository.deleteProductById(productId);
+
         return modelMapper.map(product, ProductDTO.class);
     }
 
