@@ -1,10 +1,12 @@
 package com.frosty.SpringBootECommerce.service;
 
+import com.frosty.SpringBootECommerce.exception.ResourceNotFoundException;
 import com.frosty.SpringBootECommerce.model.Address;
 import com.frosty.SpringBootECommerce.model.User;
 import com.frosty.SpringBootECommerce.payload.AddressDTO;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
 import com.frosty.SpringBootECommerce.repository.AddressRepository;
+import com.frosty.SpringBootECommerce.repository.UserRepository;
 import com.frosty.SpringBootECommerce.security.util.AuthUtil;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +19,7 @@ public class AddressServiceImpl implements AddressService {
     private final ModelMapper modelMapper;
     private final AddressRepository addressRepository;
     private final AuthUtil authUtil;
+    private final UserRepository userRepository;
 
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO) {
@@ -34,6 +37,22 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public ContentResponse<AddressDTO> getAllAddresses() {
         return new ContentResponse<>(addressRepository.findAll().stream()
+                .map(address -> modelMapper.map(address, AddressDTO.class))
+                .toList());
+    }
+
+    @Override
+    public AddressDTO getAddress(Long addressId) {
+        Address address = addressRepository
+                .findById(addressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
+        return modelMapper.map(address, AddressDTO.class);
+    }
+
+    @Override
+    public ContentResponse<AddressDTO> getUserAddresses() {
+        User user = authUtil.getPrincipal();
+        return new ContentResponse<>(addressRepository.findByUser_Id(user.getId()).stream()
                 .map(address -> modelMapper.map(address, AddressDTO.class))
                 .toList());
     }

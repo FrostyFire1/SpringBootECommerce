@@ -24,4 +24,14 @@ public class AddressController {
     public ResponseEntity<ContentResponse<AddressDTO>> getAllAddresses() {
         return ResponseEntity.ok(addressService.getAllAddresses());
     }
+
+    @GetMapping("/addresses/{addressId}")
+    public ResponseEntity<AddressDTO> getAddress(@PathVariable Long addressId) {
+        return ResponseEntity.ok(addressService.getAddress(addressId));
+    }
+
+    @GetMapping("/addresses/user")
+    public ResponseEntity<ContentResponse<AddressDTO>> getUserAddresses() {
+        return ResponseEntity.ok(addressService.getUserAddresses());
+    }
 }
