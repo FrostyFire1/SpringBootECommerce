@@ -112,67 +112,6 @@ public class CartServiceImpl implements CartService {
         return cartDTO;
     }
 
-    //    @Transactional
-    //    @Override
-    //    public CartDTO updateProductInCart(Long productId, String operation) {
-    //
-    //        String emailId = authUtil.getPrincipalEmail();
-    //        Cart userCart = cartRepository.findByUser_Email(emailId).get();
-    //        Long cartId  = userCart.getId();
-    //
-    //        Cart cart = cartRepository.findById(cartId)
-    //                .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
-    //
-    //        Product product = productRepository.findById(productId)
-    //                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-    //
-    //        CartItem cartItem = cartItemRepository.findByProduct_Id_AndCart_Id(cartId, productId)
-    //                .orElseThrow(() -> new APIException("Product " + product.getName() + " not available in the
-    // cart!!!"));
-    //
-    //        Integer quantity =  cartItem.getQuantity();
-    //        try{
-    //            quantity += Integer.parseInt(operation);
-    //        } catch (NumberFormatException e) {
-    //            throw new APIException("Couldn't parse operation");
-    //        }
-    //
-    //        if (product.getQuantity() == 0) {
-    //            throw new APIException(product.getName() + " is not available");
-    //        }
-    //
-    //        if (product.getQuantity() < quantity) {
-    //            throw new APIException("Please, make an order of the " + product.getName()
-    //                    + " less than or equal to the quantity " + product.getQuantity() + ".");
-    //        }
-    //
-    //        cartItem.setProductPrice(product.getSpecialPrice());
-    //        cartItem.setQuantity(quantity);
-    //        cartItem.setDiscount(product.getDiscount());
-    //        cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
-    //        cartRepository.save(cart);
-    //        CartItem updatedItem = cartItemRepository.save(cartItem);
-    //        if(updatedItem.getQuantity() == 0){
-    //            cartItemRepository.deleteById(updatedItem.getId());
-    //        }
-    //
-    //
-    //        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
-    //
-    //        Set<CartItem> cartItems = cart.getCartItems();
-    //
-    //        Stream<ProductDTO> productStream = cartItems.stream().map(item -> {
-    //            ProductDTO prd = modelMapper.map(item.getProduct(), ProductDTO.class);
-    //            prd.setQuantity(item.getQuantity());
-    //            return prd;
-    //        });
-    //
-    //
-    //        cartDTO.setProducts(productStream.collect(Collectors.toSet()));
-    //
-    //        return cartDTO;
-    //    }
-
     @Override
     @Transactional
     public CartDTO updateProductQuantityInCart(Long productId, String operation) {

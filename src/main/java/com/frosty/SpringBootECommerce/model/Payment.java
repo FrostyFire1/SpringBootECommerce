@@ -28,11 +28,11 @@ public class Payment {
     private String pgResponse;
     private String pgName;
 
-    public Payment(String pgPaymentId, String pgPaymentStatus, String pgResponse, String pgName, Long id) {
+    public Payment(String paymentMethod, String pgPaymentId, String pgPaymentStatus, String pgResponse, String pgName) {
+        this.paymentMethod = paymentMethod;
         this.pgPaymentId = pgPaymentId;
         this.pgPaymentStatus = pgPaymentStatus;
         this.pgResponse = pgResponse;
         this.pgName = pgName;
-        this.id = id;
     }
 }

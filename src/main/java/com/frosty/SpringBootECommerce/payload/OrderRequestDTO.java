@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequestDTO {
-    private Integer id;
+    private Long addressId;
     private String paymentMethod;
     private String pgPaymentId;
     private String pgPaymentStatus;
