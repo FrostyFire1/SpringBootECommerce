@@ -3,7 +3,6 @@ package com.frosty.SpringBootECommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +17,10 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int apartmentNumber;
+    private Integer apartmentNumber;
 
     @NotNull
-    private int houseNumber;
+    private Integer houseNumber;
 
     @NotBlank
     private String street;
@@ -38,9 +37,10 @@ public class Address {
     @NotBlank
     private String country;
 
-    @ManyToMany(mappedBy = "addresses")
+    @ManyToOne
     @ToString.Exclude
-    private Set<User> users;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Address(
             int apartmentNumber,

@@ -1,6 +1,7 @@
 package com.frosty.SpringBootECommerce.exception;
 
 import com.frosty.SpringBootECommerce.payload.APIResponse;
+import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -37,5 +38,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<APIResponse> missingServletRequestParameterHandler(
             MissingServletRequestParameterException e) {
         return ResponseEntity.badRequest().body(new APIResponse(e.getMessage(), false));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> constraintViolationHandler(ConstraintViolationException e) {
+        Map<String, String> response = new HashMap<>();
+        e.getConstraintViolations().forEach((constraintViolation) -> {
+            response.put(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage());
+        });
+        response.put("Additional", "Did you forget to put @Valid in the controller method?");
+        return ResponseEntity.badRequest().body(response);
     }
 }
