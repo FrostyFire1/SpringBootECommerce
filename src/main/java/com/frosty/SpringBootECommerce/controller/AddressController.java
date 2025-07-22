@@ -36,6 +36,11 @@ public class AddressController {
         return ResponseEntity.ok(addressService.updateAddress(addressId, addressDTO));
     }
 
+    @DeleteMapping("/addresses/{addressId}")
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId) {
+        return ResponseEntity.ok(addressService.deleteAddress(addressId));
+    }
+
     @GetMapping("/addresses/user")
     public ResponseEntity<ContentResponse<AddressDTO>> getUserAddresses() {
         return ResponseEntity.ok(addressService.getUserAddresses());

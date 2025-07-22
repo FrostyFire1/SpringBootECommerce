@@ -14,4 +14,6 @@ public interface AddressService {
     ContentResponse<AddressDTO> getUserAddresses();
 
     AddressDTO updateAddress(Long addressId, @Valid AddressDTO addressDTO);
+
+    AddressDTO deleteAddress(Long addressId);
 }
