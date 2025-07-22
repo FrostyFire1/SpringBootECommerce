@@ -2,6 +2,7 @@ package com.frosty.SpringBootECommerce.service;
 
 import com.frosty.SpringBootECommerce.payload.AddressDTO;
 import com.frosty.SpringBootECommerce.payload.ContentResponse;
+import jakarta.validation.Valid;
 
 public interface AddressService {
     AddressDTO createAddress(AddressDTO addressDTO);
@@ -11,4 +12,6 @@ public interface AddressService {
     AddressDTO getAddress(Long addressId);
 
     ContentResponse<AddressDTO> getUserAddresses();
+
+    AddressDTO updateAddress(Long addressId, @Valid AddressDTO addressDTO);
 }
